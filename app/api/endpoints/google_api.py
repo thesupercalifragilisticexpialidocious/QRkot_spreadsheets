@@ -1,5 +1,4 @@
-from datetime import timedelta
-from typing import List, Tuple
+from typing import List
 
 from aiogoogle import Aiogoogle
 from fastapi import APIRouter, Depends
@@ -12,7 +11,6 @@ from app.crud.charity_project import project_crud
 from app.services.google_api import (
     spreadsheets_create, set_user_permissions, spreadsheets_update_value
 )
-from app.models import CharityProject
 
 router = APIRouter()
 

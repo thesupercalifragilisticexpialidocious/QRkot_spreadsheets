@@ -1,4 +1,3 @@
-from datetime import timedelta
 from typing import List, Optional, Tuple
 
 from sqlalchemy import desc, func, select
@@ -32,7 +31,7 @@ class CRUDProject(CRUDBase):
                 )).label('rate'),
                 CharityProject.description
             ).where(
-                CharityProject.fully_invested == True
+                CharityProject.fully_invested is True
             ).order_by(desc('rate'))
         )
         return projects.all()
