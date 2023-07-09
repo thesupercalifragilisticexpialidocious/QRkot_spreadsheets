@@ -66,5 +66,7 @@ uvicorn app.main:app
 
 Интерактивная спецификация API будет доступна по адресу [127.0.0.1:8000/docs#/](http://127.0.0.1:8000/docs#/)
 
+Спецификация в формате OpenAPI хранится в ```openapi.json```
+
 [github.com/thesupercalifragilisticexpialidocious](https://github.com/thesupercalifragilisticexpialidocious/)
 email: [cmstreltsov@ya.ru](mailto:cmstreltsov@ya.ru)

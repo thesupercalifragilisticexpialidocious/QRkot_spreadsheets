@@ -1,6 +1,5 @@
+from copy import deepcopy
 from datetime import datetime
-from math import ceil, log
-from string import ascii_uppercase
 from typing import List, Optional, Tuple
 
 from aiogoogle import Aiogoogle
@@ -29,26 +28,6 @@ def get_body(title: Optional[str] = None) -> dict:
             )
         ))]
     )
-
-
-def spacial_range(
-    number_of_columns,
-    number_of_rows,
-    horizontal_offset=0,
-    vertical_offset=0,
-):
-    def int_to_literal_number(number):
-        result = []
-        base = len(ascii_uppercase)
-        for _ in range(ceil(log(number, base))):
-            result.append(ascii_uppercase[number % base])
-            number //= base
-        return ''.join(result[::-1])
-
-    return (f'{int_to_literal_number(horizontal_offset + 1)}'
-            f'{vertical_offset + 1}'
-            f':{int_to_literal_number(horizontal_offset + number_of_columns)}'
-            f'{vertical_offset + number_of_rows}')
 
 
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
@@ -82,7 +61,7 @@ async def spreadsheets_update_value(
         wrapper_services: Aiogoogle
 ) -> None:
     service = await wrapper_services.discover('sheets', 'v4')
-    headers = list(SHEET_HEADERS)
+    headers = deepcopy(SHEET_HEADERS)
     headers[0].append(datetime.now().strftime(FORMAT))
     projects = [[
         project[0],
@@ -91,7 +70,9 @@ async def spreadsheets_update_value(
     ] for project in projects]
     table_values = [*headers, *projects]
     number_of_rows = len(table_values)
-    if number_of_rows > settings.sheet_rows:
+    number_of_columns = max([len(row) for row in table_values])
+    if (number_of_rows > settings.sheet_rows or
+            number_of_columns > settings.sheet_columns):
         raise ValueError('Слишком много данныых.')
     update_body = {
         'majorDimension': 'ROWS',
@@ -100,10 +81,8 @@ async def spreadsheets_update_value(
     await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
             spreadsheetId=spreadsheetid,
-            range=spacial_range(
-                number_of_columns=settings.sheet_columns,
-                number_of_rows=number_of_rows
-            ),
+            range=(f'R1C1:R{number_of_rows}'
+                   f'C{number_of_columns}'),
             valueInputOption='USER_ENTERED',
             json=update_body
         )
