@@ -39,7 +39,7 @@ async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
 
 
 async def set_user_permissions(
-        spreadsheetid: str,
+        spreadsheet_id: str,
         wrapper_services: Aiogoogle
 ) -> None:
     permissions_body = {'type': 'user',
@@ -48,7 +48,7 @@ async def set_user_permissions(
     service = await wrapper_services.discover('drive', 'v3')
     await wrapper_services.as_service_account(
         service.permissions.create(
-            fileId=spreadsheetid,
+            fileId=spreadsheet_id,
             json=permissions_body,
             fields="id"
         )
@@ -56,7 +56,7 @@ async def set_user_permissions(
 
 
 async def spreadsheets_update_value(
-        spreadsheetid: str,
+        spreadsheet_id: str,
         projects: List[Tuple[str, str, str]],
         wrapper_services: Aiogoogle
 ) -> None:
@@ -72,15 +72,20 @@ async def spreadsheets_update_value(
     number_of_rows = len(table_values)
     number_of_columns = max([len(row) for row in table_values])
     if (number_of_rows > settings.sheet_rows or
-            number_of_columns > settings.sheet_columns):
-        raise ValueError('Слишком много данныых.')
+        number_of_columns > settings.sheet_columns):
+        raise ValueError(
+            f'Слишком много данных. Размер массива для записи'
+            f'{number_of_rows}x{number_of_columns}'
+            f'превышает выделенное пространство'
+            f'{settings.sheet_rows}x{settings.sheet_columns}.'
+        )
     update_body = {
         'majorDimension': 'ROWS',
         'values': table_values
     }
     await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
-            spreadsheetId=spreadsheetid,
+            spreadsheetId=spreadsheet_id,
             range=(f'R1C1:R{number_of_rows}'
                    f'C{number_of_columns}'),
             valueInputOption='USER_ENTERED',

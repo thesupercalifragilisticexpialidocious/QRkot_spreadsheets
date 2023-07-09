@@ -64,9 +64,9 @@ alembic upgrade head
 uvicorn app.main:app
 ```
 
-Интерактивная спецификация API будет доступна по адресу [127.0.0.1:8000/docs#/](http://127.0.0.1:8000/docs#/)
+Интерактивная Swagger-спецификация API будет доступна по адресу [127.0.0.1:8000/docs#/](http://127.0.0.1:8000/docs#/). Доступна также redoc-справка через [127.0.0.1:8000/redoc/](http://127.0.0.1:8000/redoc/)
 
-Спецификация в формате OpenAPI хранится в ```openapi.json```
+
 
 [github.com/thesupercalifragilisticexpialidocious](https://github.com/thesupercalifragilisticexpialidocious/)
 email: [cmstreltsov@ya.ru](mailto:cmstreltsov@ya.ru)
