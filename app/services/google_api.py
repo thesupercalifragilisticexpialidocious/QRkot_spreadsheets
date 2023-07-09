@@ -71,8 +71,10 @@ async def spreadsheets_update_value(
     table_values = [*headers, *projects]
     number_of_rows = len(table_values)
     number_of_columns = max([len(row) for row in table_values])
-    if (number_of_rows > settings.sheet_rows or
-        number_of_columns > settings.sheet_columns):
+    if (
+        number_of_rows > settings.sheet_rows or
+        number_of_columns > settings.sheet_columns
+    ):
         raise ValueError(
             f'Слишком много данных. Размер массива для записи'
             f'{number_of_rows}x{number_of_columns}'
