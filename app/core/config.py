@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     auth_provider_x509_cert_url: Optional[str] = None
     client_x509_cert_url: Optional[str] = None
     email: Optional[str] = None
+    sheet_columns: int = 3
+    sheet_rows: int = 128
 
     class Config:
         env_file = '.env'
