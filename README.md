@@ -51,6 +51,7 @@ DATABASE_URL=[идентификатор СУБД в формате: mysql://use
 SECRET=[secretforpasswordhashing]
 FIRST_SUPERUSER_EMAIL=[a@a.com]
 FIRST_SUPERUSER_PASSWORD=[qwertyu]
+```
 
 Создайте таблицы:
 
@@ -69,4 +70,3 @@ uvicorn app.main:app
 
 
 [github.com/thesupercalifragilisticexpialidocious](https://github.com/thesupercalifragilisticexpialidocious/)
-email: [cmstreltsov@ya.ru](mailto:cmstreltsov@ya.ru)
